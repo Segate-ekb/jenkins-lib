@@ -21,6 +21,11 @@ class TimeoutOptions implements Serializable {
     ''')
     Integer initInfoBase
 
+    @JsonPropertyDescription('''Таймаут шага загрузки расширений в базу, в минутах.
+    По умолчанию содержит значение 60.
+    ''')
+    Integer loadExtintions
+
     @JsonPropertyDescription('''Таймаут шага архивирования информационной базы, в минутах.
     По умолчанию содержит значение 60.
     ''')
