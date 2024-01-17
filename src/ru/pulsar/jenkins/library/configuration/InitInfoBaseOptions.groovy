@@ -60,7 +60,7 @@ class InitInfoBaseOptions implements Serializable {
             "initMethod=" + initMethod +
             ", runMigration=" + runMigration +
             ", additionalInitializationSteps=" + additionalInitializationSteps +
-            ", extintions=" + Arrays.toString(extintions) +
+            ", extintions=" + extintions +
             '}';
     }
 }
