@@ -159,33 +159,33 @@
           "description": "Дополнительные шаги, запускаемые через vrunner.\n    В каждой строке передается отдельная команда \n    vrunner и ее аргументы (например, \"vanessa --settings ./tools/vrunner.first.json\")\n    ",
           "items": {
             "type": "string"
-          },
-          "extintions": {
-            "type": "array",
-            "description": "Массив расширений для загрузки в конфигурацию.",
-            "items": {
-              "type": "object",
-              "id": "urn:jsonschema:ru:pulsar:jenkins:library:configuration:InitInfoBaseOptions:extintions:exception",
-              "description": "Информация о расширении для загрузки",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "Имя расширения с которым оно грузится в конфигурацию"
-                },
-                "initMethod": {
-                  "type": "string",
-                  "description": "\n    Способ инициализации расширения.\n    Поддерживается два варианта:\n        * fromSource - инициализация расширения из исходников;\n        * fromInternet - скачивание скомпилированного cfe по ссылке.",
-                  "enum": ["fromSource", "fromInternet"]
-                },
-                "path": {
-                  "type": "string",
-                  "description": "Хранит в себе путь к расширению.\n        * В случае если выбран initMethod <fromSource> - указывается путь к исходникам расширения.\n        * В случае если выбран initMethod <fromInternet> - указывается ссылка на cfe-файл"
-                },
-                "sourceFormat": {
-                  "type": "string",
-                  "description": "Формат исходников конфигурации",
-                  "enum": ["edt", "designer"]
-                }
+          }
+        },
+        "extintions": {
+          "type": "array",
+          "description": "Массив расширений для загрузки в конфигурацию.",
+          "items": {
+            "type": "object",
+            "id": "urn:jsonschema:ru:pulsar:jenkins:library:configuration:InitInfoBaseOptions:extintions:exception",
+            "description": "Информация о расширении для загрузки",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Имя расширения с которым оно грузится в конфигурацию"
+              },
+              "initMethod": {
+                "type": "string",
+                "description": "\n    Способ инициализации расширения.\n    Поддерживается два варианта:\n        * fromSource - инициализация расширения из исходников;\n        * fromInternet - скачивание скомпилированного cfe по ссылке.",
+                "enum": ["fromSource", "fromInternet"]
+              },
+              "path": {
+                "type": "string",
+                "description": "Хранит в себе путь к расширению.\n        * В случае если выбран initMethod <fromSource> - указывается путь к исходникам расширения.\n        * В случае если выбран initMethod <fromInternet> - указывается ссылка на cfe-файл"
+              },
+              "sourceFormat": {
+                "type": "string",
+                "description": "Формат исходников конфигурации",
+                "enum": ["edt", "designer"]
               }
             }
           }
