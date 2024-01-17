@@ -7,11 +7,11 @@ import ru.pulsar.jenkins.library.ioc.ContextRegistry
 import ru.pulsar.jenkins.library.utils.Logger
 import ru.pulsar.jenkins.library.utils.VRunner
 
-class loadExtintions implements Serializable {
+class LoadExtintions implements Serializable {
 
     private final JobConfiguration config;
 
-    loadExtintions(JobConfiguration config) {
+    LoadExtintions(JobConfiguration config) {
         this.config = config
     }
 
