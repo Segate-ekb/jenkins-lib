@@ -110,7 +110,7 @@ void call() {
                                     stage('Загрузка расширений в конфигурацию'){
                                         when {
                                             beforeAgent true
-                                            expression { config.needExtintions() }
+                                            expression { config.needLoadExtintions() }
                                         }
                                         steps {
                                             timeout(time: config.timeoutOptions.loadExtintions, unit: TimeUnit.MINUTES) {
