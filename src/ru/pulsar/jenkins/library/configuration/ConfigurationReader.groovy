@@ -113,10 +113,28 @@ class ConfigurationReader implements Serializable {
 
     @NonCPS
     private static void mergeInitInfoBaseOptions(InitInfoBaseOptions baseObject, InitInfoBaseOptions objectToMerge) {
-        if (objectToMerge == null || objectToMerge.additionalInitializationSteps == null) {
+        if (objectToMerge == null) {
+            return
+        }
+        mergeInitInfoBaseAdditionalInitializationSteps(baseObject, objectToMerge)
+        mergeInitInfoBaseExtintions(baseObject, objectToMerge)
+    }
+
+    @NonCPS
+    private static void mergeInitInfoBaseAdditionalInitializationSteps(InitInfoBaseOptions baseObject, InitInfoBaseOptions objectToMerge) {
+        if (objectToMerge.additionalInitializationSteps == null) {
             return
         }
         baseObject.additionalInitializationSteps = objectToMerge.additionalInitializationSteps.clone()
+    }
+
+
+    @NonCPS
+    private static void mergeInitInfoBaseExtintions(InitInfoBaseOptions baseObject, InitInfoBaseOptions objectToMerge) {
+        if (objectToMerge.extintions == null) {
+            return
+        }
+        baseObject.extintions = objectToMerge.extintions.clone()
     }
 
     @NonCPS

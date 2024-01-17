@@ -107,6 +107,18 @@ void call() {
                                         }
                                     }
 
+                                    stage('Загрузка расширений в конфигурацию'){
+                                        when {
+                                            beforeAgent true
+                                            expression { config.needExtintions() }
+                                        }
+                                        steps {
+                                            timeout(time: config.timeoutOptions.loadExtintions, unit: TimeUnit.MINUTES) {
+                                                loadExtintions config
+                                            }
+                                        }
+                                    }
+
                                     stage('Архивация ИБ') {
                                         steps {
                                             timeout(time: config.timeoutOptions.zipInfoBase, unit: TimeUnit.MINUTES) {
