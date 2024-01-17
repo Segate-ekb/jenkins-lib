@@ -61,6 +61,7 @@ class ConfigurationReader implements Serializable {
             "stageFlags",
             "timeoutOptions",
             "initInfoBaseOptions",
+            "extintions",
             "bddOptions",
             "sonarQubeOptions",
             "smokeTestOptions",
