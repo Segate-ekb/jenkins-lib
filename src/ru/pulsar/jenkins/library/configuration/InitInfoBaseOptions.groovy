@@ -25,6 +25,34 @@ class InitInfoBaseOptions implements Serializable {
     """)
     String[] additionalInitializationSteps
 
+
+    @JsonPropertyDescription("Массив расширений для загрузки в конфигурацию.")
+    Extintion[] extintions;
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    static class Extintion implements Serializable {
+        @JsonPropertyDescription("Имя расширения с которым оно грузится в конфигурацию")
+        String name;
+
+        @JsonPropertyDescription("""
+        Способ инициализации расширения.
+        Поддерживается два варианта:
+            * fromSource - инициализация расширения из исходников;
+            * fromInternet - скачивание скомпилированного cfe по ссылке.
+        """)
+        String initMethod;
+
+        @JsonPropertyDescription("""
+        Хранит в себе путь к расширению.
+            * В случае если выбран initMethod <fromSource> - указывается путь к исходникам расширения.
+            * В случае если выбран initMethod <fromInternet> - указывается ссылка на cfe-файл
+        """)
+        String path;
+
+        @JsonPropertyDescription("Формат исходников конфигурации")
+        String sourceFormat;
+    }
+
     @Override
     @NonCPS
     String toString() {
@@ -32,6 +60,7 @@ class InitInfoBaseOptions implements Serializable {
             "initMethod=" + initMethod +
             ", runMigration=" + runMigration +
             ", additionalInitializationSteps=" + additionalInitializationSteps +
+            ", extintions=" + Arrays.toString(extintions) +
             '}';
     }
 }
