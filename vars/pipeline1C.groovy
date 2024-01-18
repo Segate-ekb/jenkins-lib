@@ -114,7 +114,7 @@ void call() {
                                         }
                                         steps {
                                             timeout(time: config.timeoutOptions.loadExtintions, unit: TimeUnit.MINUTES) {
-                                                loadExtintions config
+                                                loadExtensions config
                                             }
                                         }
                                     }
