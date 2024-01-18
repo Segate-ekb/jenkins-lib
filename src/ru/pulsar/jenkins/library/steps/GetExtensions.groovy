@@ -27,7 +27,7 @@ class GetExtensions implements Serializable {
         Logger.printLocation()
 
         def env = steps.env()
-        FileUtils.getFilePath("$env.WORKSPACE/$CONFIGURATION_DIR")
+        FileUtils.getFilePath("$env.WORKSPACE/$EXTENSIONS_OUT_DIR")
 
         steps.installLocalDependencies();
 
