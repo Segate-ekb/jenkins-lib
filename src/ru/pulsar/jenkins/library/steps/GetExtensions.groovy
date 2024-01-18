@@ -22,7 +22,7 @@ class GetExtensions implements Serializable {
     GetExtensions(JobConfiguration config) {
         this.config = config
         this.srcDir = getSrcDir();
-        this.vrunnerPath = VRunner.getVRunnerPath();
+        this.vrunnerPath = initVRunnerPath();
     }
 
     def run() {
@@ -62,6 +62,12 @@ class GetExtensions implements Serializable {
         localPathToExtension.copyFrom(new URL(extension.path))
     }
 
+    @NonCPS
+    private String initVRunnerPath() {
+        return VRunner.getVRunnerPath()
+    }
+
+    @NonCPS
     private String getSrcDir() {
         if (config.sourceFormat == SourceFormat.EDT) {
             def env = steps.env();
