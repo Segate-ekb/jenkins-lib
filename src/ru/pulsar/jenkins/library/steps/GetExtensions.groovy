@@ -1,6 +1,5 @@
 package ru.pulsar.jenkins.library.steps
 
-import org.codehaus.groovy.transform.stc.ExtensionMethodCache
 import ru.pulsar.jenkins.library.IStepExecutor
 import ru.pulsar.jenkins.library.configuration.JobConfiguration
 import ru.pulsar.jenkins.library.configuration.SourceFormat
