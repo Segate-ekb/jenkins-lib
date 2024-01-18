@@ -24,11 +24,9 @@ class LoadExtensions implements Serializable {
         steps.withEnv(logosConfig) {
 
             String vrunnerPath = VRunner.getVRunnerPath();
-
-            steps.catchError {
                
-                config.initInfoBaseOptions.extensions.each {
-                    Logger.println("Установим расширение ${it.name}")
+            config.initInfoBaseOptions.extensions.each {
+                Logger.println("Установим расширение ${it.name}")
 
                     // if (config.sourceFormat == SourceFormat.EDT) {
                     //     def env = steps.env();
@@ -41,7 +39,6 @@ class LoadExtensions implements Serializable {
                     // }
 
                     // VRunner.exec("$vrunnerPath ${it} --ibconnection \"/F./build/ib\"")
-                }
             }
         }
     }
