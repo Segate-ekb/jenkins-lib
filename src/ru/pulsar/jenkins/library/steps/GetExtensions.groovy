@@ -37,7 +37,7 @@ class GetExtensions implements Serializable {
 
         config.initInfoBaseOptions.extensions.each {
             println(InitMethod.SOURCE)
-            pintln(it.initMethod)
+            println(it.initMethod)
             if (it.initMethod == InitMethod.SOURCE) {
                 Logger.println("Сборка расширения ${it.name} из исходников")
                 buildExtension(it, srcDir, vrunnerPath)
