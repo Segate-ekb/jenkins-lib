@@ -16,11 +16,13 @@ class GetExtensions implements Serializable {
     public static final String EXTENSIONS_OUT_DIR = 'build/out/cfe'
 
     private final JobConfiguration config;
-    private final String vrunnerPath = VRunner.getVRunnerPath();
-    private final String srcDir = getSrcDir();
+    private final String vrunnerPath;
+    private final String srcDir;
 
     GetExtensions(JobConfiguration config) {
         this.config = config
+        this.srcDir = getSrcDir();
+        this.vrunnerPath = VRunner.getVRunnerPath();
     }
 
     def run() {
