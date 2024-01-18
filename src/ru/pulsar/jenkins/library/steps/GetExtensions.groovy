@@ -8,6 +8,8 @@ import ru.pulsar.jenkins.library.configuration.InitInfoBaseOptions.Extension
 import ru.pulsar.jenkins.library.ioc.ContextRegistry
 import ru.pulsar.jenkins.library.utils.Logger
 import ru.pulsar.jenkins.library.utils.VRunner
+import hudson.FilePath
+import ru.pulsar.jenkins.library.utils.FileUtils
 
 class GetExtensions implements Serializable {
 
