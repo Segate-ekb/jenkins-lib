@@ -38,7 +38,7 @@ class GetExtensions implements Serializable {
         config.initInfoBaseOptions.extensions.each {
             if (it.initMethod == InitMethod.SOURCE) {
                 Logger.println("Сборка расширения ${it.name} из исходников")
-                buildExtension(it, srcDir, vrunnerPath)
+                buildExtension(it, srcDir, vrunnerPath, steps)
             } else {
                 Logger.println("Загрузка расширения ${it.name} из интернета по ссылке ${it.path}")
                 loadExtension(it, env)
@@ -46,7 +46,7 @@ class GetExtensions implements Serializable {
         }
     }
 
-    private void buildExtension(Extension extension, String srcDir, String vrunnerPath) {
+    private void buildExtension(Extension extension, String srcDir, String vrunnerPath, IStepExecutor steps) {
 
         String name = extension.name;
 
