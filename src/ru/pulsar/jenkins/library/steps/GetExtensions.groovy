@@ -49,7 +49,9 @@ class GetExtensions implements Serializable {
     }
 
     private void buildExtension(Extension extension, String srcDir, String vrunnerPath, IStepExecutor steps) {
-
+        if (!new File(EXTENSIONS_OUT_DIR).exists()) {
+            new File(EXTENSIONS_OUT_DIR).mkdirs()
+        }
         FilePath localPathToExtension = FileUtils.getFilePath($EXTENSIONS_OUT_DIR/${extension.name}.cfe)
         def compileExtCommand = "$vrunnerPath compileexttocfe --src ${srcDir} --out ${localPathToExtension}"
         List<String> logosConfig = ["LOGOS_CONFIG=$config.logosConfig"]
