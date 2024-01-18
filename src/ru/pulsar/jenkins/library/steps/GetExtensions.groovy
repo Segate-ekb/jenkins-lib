@@ -16,13 +16,9 @@ class GetExtensions implements Serializable {
     public static final String EXTENSIONS_OUT_DIR = 'build/out/cfe'
 
     private final JobConfiguration config;
-    private final String vrunnerPath;
-    private final String srcDir;
 
     GetExtensions(JobConfiguration config) {
         this.config = config
-        this.srcDir = getSrcDir();
-        this.vrunnerPath = initVRunnerPath();
     }
 
     def run() {
@@ -32,12 +28,15 @@ class GetExtensions implements Serializable {
 
         steps.installLocalDependencies();
 
+        String vrunnerPath = initVRunnerPath();
+        String srcDir = getSrcDir();
+
         Logger.println("Сборка расширений")
 
         config.initInfoBaseOptions.extensions.each {
             if (it.initMethod == InitMethod.SOURCE) {
                 Logger.println("Сборка расширения ${it.name} из исходников")
-                buildExtension(it)
+                buildExtension(it, srcDir, vrunnerPath)
             } else {
                 Logger.println("Загрузка расширения ${it.name} из интернета по ссылке ${it.path}")
                 loadExtension(it)
@@ -45,7 +44,7 @@ class GetExtensions implements Serializable {
         }
     }
 
-    private void buildExtension(Extension extension) {
+    private void buildExtension(Extension extension, String srcDir, String vrunnerPath) {
 
         String name = extension.name;
 
@@ -62,12 +61,11 @@ class GetExtensions implements Serializable {
         localPathToExtension.copyFrom(new URL(extension.path))
     }
 
-    @NonCPS
+
     private String initVRunnerPath() {
         return VRunner.getVRunnerPath()
     }
 
-    @NonCPS
     private String getSrcDir() {
         if (config.sourceFormat == SourceFormat.EDT) {
             def env = steps.env();
