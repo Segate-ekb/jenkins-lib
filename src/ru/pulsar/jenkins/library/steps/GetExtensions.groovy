@@ -27,7 +27,6 @@ class GetExtensions implements Serializable {
         Logger.printLocation()
 
         def env = steps.env()
-        FileUtils.getFilePath("$env.WORKSPACE/$EXTENSIONS_OUT_DIR")
 
         steps.installLocalDependencies();
 
@@ -51,8 +50,8 @@ class GetExtensions implements Serializable {
 
     private void buildExtension(Extension extension, String srcDir, String vrunnerPath, IStepExecutor steps) {
 
-        FilePath localPathToExtension = FileUtils.getFilePath(srcDir)
-        def compileExtCommand = "$vrunnerPath compileexttocfe --src ${localPathToExtension} --out $EXTENSIONS_OUT_DIR/${extension.name}.cfe"
+        FilePath localPathToExtension = FileUtils.getFilePath($EXTENSIONS_OUT_DIR/${extension.name}.cfe)
+        def compileExtCommand = "$vrunnerPath compileexttocfe --src ${srcDir} --out ${localPathToExtension}"
         List<String> logosConfig = ["LOGOS_CONFIG=$config.logosConfig"]
         steps.withEnv(logosConfig) {
             VRunner.exec(compileExtCommand)
