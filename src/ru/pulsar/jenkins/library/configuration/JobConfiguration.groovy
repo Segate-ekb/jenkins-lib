@@ -100,14 +100,6 @@ class JobConfiguration implements Serializable {
             (initMethod == InitInfoBaseMethod.DEFAULT_BRANCH_FROM_STORAGE && branchName != defaultBranch)
     }
 
-    boolean needLoadExtintions() {
-        IStepExecutor steps = ContextRegistry.getContext().getStepExecutor()
-        def env = steps.env();
-        String branchName = env.BRANCH_NAME;
-        def extensions = initInfoBaseOptions.extensions
-
-        return extensions.length != 0
-    }
 
     String v8AgentLabel() {
         return v8version

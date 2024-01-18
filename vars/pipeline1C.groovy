@@ -77,10 +77,6 @@ void call() {
 
                                 stages {
                                     stage('Сборка из исходников'){
-                                        when {
-                                            beforeAgent true
-                                            expression { config.needBuildStage() }
-                                        }
                                         steps {
                                             timeout(time: config.timeoutOptions.getBinaries, unit: TimeUnit.MINUTES) {
                                                 createDir('build/cfe')
@@ -124,10 +120,6 @@ void call() {
                                     }
 
                                     stage('Загрузка расширений в конфигурацию'){
-                                        when {
-                                            beforeAgent true
-                                            expression { config.needLoadExtintions() }
-                                        }
                                         steps {
                                             timeout(time: config.timeoutOptions.loadExtintions, unit: TimeUnit.MINUTES) {
                                                 loadExtensions config
