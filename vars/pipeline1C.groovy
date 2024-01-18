@@ -79,7 +79,7 @@ void call() {
                                     stage('Сборка из исходников'){
                                         steps {
                                             timeout(time: config.timeoutOptions.getBinaries, unit: TimeUnit.MINUTES) {
-                                                createDir('build/cfe')
+                                                createDir('build/out/cfe')
                                                 // Соберем или загрузим cfe из исходников и положим их в папку build/cfe/
                                                 getExtensions config
                                             }
