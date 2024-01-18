@@ -1,5 +1,6 @@
 package ru.pulsar.jenkins.library.steps
 
+import org.codehaus.groovy.transform.stc.ExtensionMethodCache
 import ru.pulsar.jenkins.library.IStepExecutor
 import ru.pulsar.jenkins.library.configuration.JobConfiguration
 import ru.pulsar.jenkins.library.configuration.SourceFormat
@@ -31,13 +32,14 @@ class GetExtensions implements Serializable {
 
 
         String vrunnerPath = initVRunnerPath();
-        String srcDir = getSrcDir(env);
+
 
         Logger.println("Сборка расширений")
 
         config.initInfoBaseOptions.extensions.each {
             if (it.initMethod == InitMethod.SOURCE) {
                 Logger.println("Сборка расширения ${it.name} из исходников")
+                String srcDir = getSrcDir(it, env);
                 buildExtension(it, srcDir, vrunnerPath, steps)
             } else {
                 Logger.println("Загрузка расширения ${it.name} из интернета по ссылке ${it.path}")
@@ -48,9 +50,7 @@ class GetExtensions implements Serializable {
 
     private void buildExtension(Extension extension, String srcDir, String vrunnerPath, IStepExecutor steps) {
 
-        String name = extension.name;
-
-        def compileExtCommand = "$vrunnerPath compileexttocfe --src $srcDir/${name} --out $EXTENSIONS_OUT_DIR/${name}.cfe"
+        def compileExtCommand = "$vrunnerPath compileexttocfe --src ${srcDir} --out $EXTENSIONS_OUT_DIR/${extension.name}.cfe"
         List<String> logosConfig = ["LOGOS_CONFIG=$config.logosConfig"]
         steps.withEnv(logosConfig) {
             VRunner.exec(compileExtCommand)
@@ -68,7 +68,7 @@ class GetExtensions implements Serializable {
         return VRunner.getVRunnerPath()
     }
 
-    private String getSrcDir(def env) {
+    private String getSrcDir(Extension extension, def env) {
         if (config.sourceFormat == SourceFormat.EDT) {
             sourceDirName = "$env.WORKSPACE/$EdtToDesignerFormatTransformation.EXTENSION_DIR"
             // распакуем расширения
@@ -77,7 +77,14 @@ class GetExtensions implements Serializable {
 
             return sourceDirName;
         } else {
-            return config.srcDir;
+            String cfeDirName
+            if (extension.path == null) {
+                cfeDirName = config.srcDir+"/cfe/"+extension.name
+            } else {
+                cfeDirName = extension.path
+            }
+
+            return cfeDirName;
         }
     }
 }
