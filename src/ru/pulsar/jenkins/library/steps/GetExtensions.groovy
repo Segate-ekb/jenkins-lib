@@ -23,13 +23,15 @@ class GetExtensions implements Serializable {
 
     def run() {
         IStepExecutor steps = ContextRegistry.getContext().getStepExecutor()
+        def env = steps.env();
 
         Logger.printLocation()
 
         steps.installLocalDependencies();
 
+
         String vrunnerPath = initVRunnerPath();
-        String srcDir = getSrcDir();
+        String srcDir = getSrcDir(env);
 
         Logger.println("Сборка расширений")
 
@@ -39,7 +41,7 @@ class GetExtensions implements Serializable {
                 buildExtension(it, srcDir, vrunnerPath)
             } else {
                 Logger.println("Загрузка расширения ${it.name} из интернета по ссылке ${it.path}")
-                loadExtension(it)
+                loadExtension(it, env)
             }
         }
     }
@@ -55,7 +57,7 @@ class GetExtensions implements Serializable {
         }
     }
 
-    private void loadExtension(Extension extension) {
+    private void loadExtension(Extension extension, def env) {
         String pathToExtension = "$env.WORKSPACE/${EXTENSIONS_OUT_DIR}/${extension.name}.cfe"
         FilePath localPathToExtension = FileUtils.getFilePath(pathToExtension)
         localPathToExtension.copyFrom(new URL(extension.path))
@@ -66,10 +68,8 @@ class GetExtensions implements Serializable {
         return VRunner.getVRunnerPath()
     }
 
-    private String getSrcDir() {
+    private String getSrcDir(def env) {
         if (config.sourceFormat == SourceFormat.EDT) {
-            def env = steps.env();
-
             sourceDirName = "$env.WORKSPACE/$EdtToDesignerFormatTransformation.EXTENSION_DIR"
             // распакуем расширения
             steps.unstash(EdtToDesignerFormatTransformation.EXTENSION_ZIP_STASH)
