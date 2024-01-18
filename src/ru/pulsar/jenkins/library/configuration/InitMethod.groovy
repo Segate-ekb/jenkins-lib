@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 enum InitMethod {
     @JsonProperty("fromSource")
-    SOURCE,
+    fromSource,
 
     @JsonProperty("fromInternet")
-    INTERNET
+    fromInternet
 
 }
