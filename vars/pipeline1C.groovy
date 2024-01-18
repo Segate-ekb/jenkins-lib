@@ -90,9 +90,9 @@ void call() {
                                         }
                                     }
                                     stage('Создание ИБ') {
-                                        when {
-                                            beforeAgent true
-                                        }
+                                        // when {
+                                       //     beforeAgent true
+                                       // }
                                         steps {
                                             timeout(time: config.timeoutOptions.createInfoBase, unit: TimeUnit.MINUTES) {
                                                 createDir('build/out/')
