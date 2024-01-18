@@ -76,10 +76,26 @@ void call() {
                                 }
 
                                 stages {
+                                    stage('Сборка из исходников'){
+                                        when {
+                                            beforeAgent true
+                                            expression { config.needBuildStage() }
+                                        }
+                                        steps {
+                                            timeout(time: config.timeoutOptions.getBinaries, unit: TimeUnit.MINUTES) {
+                                                createDir('build/cfe')
+                                                // Соберем или загрузим cfe из исходников и положим их в папку build/cfe/
+                                                getExtensions config
+                                            }
+                                        }
+                                    }
                                     stage('Создание ИБ') {
+                                        when {
+                                            beforeAgent true
+                                        }
                                         steps {
                                             timeout(time: config.timeoutOptions.createInfoBase, unit: TimeUnit.MINUTES) {
-                                                createDir('build/out')
+                                                createDir('build/out/')
 
                                                 script {
                                                     if (config.infoBaseFromFiles()) {

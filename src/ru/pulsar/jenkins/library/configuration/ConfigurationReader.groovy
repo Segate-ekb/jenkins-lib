@@ -61,7 +61,7 @@ class ConfigurationReader implements Serializable {
             "stageFlags",
             "timeoutOptions",
             "initInfoBaseOptions",
-            "extintions",
+            "extensions",
             "bddOptions",
             "sonarQubeOptions",
             "smokeTestOptions",
@@ -132,10 +132,10 @@ class ConfigurationReader implements Serializable {
 
     @NonCPS
     private static void mergeInitInfoBaseExtintions(InitInfoBaseOptions baseObject, InitInfoBaseOptions objectToMerge) {
-        if (objectToMerge.extintions == null) {
+        if (objectToMerge.extensions == null) {
             return
         }
-        baseObject.extintions = objectToMerge.extintions.clone()
+        baseObject.extensions = objectToMerge.extensions.clone()
     }
 
     @NonCPS

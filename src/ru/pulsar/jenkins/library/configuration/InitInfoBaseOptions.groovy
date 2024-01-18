@@ -27,10 +27,10 @@ class InitInfoBaseOptions implements Serializable {
 
 
     @JsonPropertyDescription("Массив расширений для загрузки в конфигурацию.")
-    Extintion[] extintions;
+    Extension[] extensions;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    static class Extintion implements Serializable {
+    static class Extension implements Serializable {
         @JsonPropertyDescription("Имя расширения с которым оно грузится в конфигурацию")
         String name;
 
@@ -60,7 +60,7 @@ class InitInfoBaseOptions implements Serializable {
             "initMethod=" + initMethod +
             ", runMigration=" + runMigration +
             ", additionalInitializationSteps=" + additionalInitializationSteps +
-            ", extintions=" + extintions +
+            ", extensions=" + extensions +
             '}';
     }
 }

@@ -102,7 +102,7 @@
           "type": "integer",
           "description": "Таймаут шага инициализации информационной базы, в минутах.\n    По умолчанию содержит значение 60.\n    "
         },
-        "loadExtintions": {
+        "loadExtensions": {
           "type": "integer",
           "description": "Таймаут шага загрузки расширений в базу, в минутах.\n    По умолчанию содержит значение 60.\n    "
         },
@@ -161,12 +161,12 @@
             "type": "string"
           }
         },
-        "extintions": {
+        "extensions": {
           "type": "array",
           "description": "Массив расширений для загрузки в конфигурацию.",
           "items": {
             "type": "object",
-            "id": "urn:jsonschema:ru:pulsar:jenkins:library:configuration:InitInfoBaseOptions:extintions:exception",
+            "id": "urn:jsonschema:ru:pulsar:jenkins:library:configuration:InitInfoBaseOptions:extensions:exception",
             "description": "Информация о расширении для загрузки",
             "properties": {
               "name": {

@@ -40,7 +40,7 @@
     "runMigration": true,
     "additionalInitializationSteps": [],
     "loadExtintionsByDefault": true,
-    "extintions": []
+    "extensions": []
   },
   "bdd": {
     "vrunnerSteps": [

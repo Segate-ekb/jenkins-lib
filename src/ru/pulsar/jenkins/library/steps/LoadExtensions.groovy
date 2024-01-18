@@ -27,7 +27,7 @@ class LoadExtensions implements Serializable {
 
             steps.catchError {
                
-                config.initInfoBaseOptions.extintions.each {
+                config.initInfoBaseOptions.extensions.each {
                     Logger.println("Установим расширение ${it.name}")
 
                     // if (config.sourceFormat == SourceFormat.EDT) {
