@@ -80,7 +80,7 @@ void call() {
                                         steps {
                                             timeout(time: config.timeoutOptions.getBinaries, unit: TimeUnit.MINUTES) {
                                                 createDir('build/out/cfe')
-                                                // Соберем или загрузим cfe из исходников и положим их в папку build/cfe/
+                                                // Соберем или загрузим cfe из исходников и положим их в папку build/out/cfe
                                                 getExtensions config
                                             }
                                         }
