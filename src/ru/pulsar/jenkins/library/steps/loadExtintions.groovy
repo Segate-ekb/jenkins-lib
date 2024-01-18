@@ -1,8 +1,8 @@
 package ru.pulsar.jenkins.library.steps
 
-import org.jenkinsci.plugins.pipeline.utility.steps.fs.FileWrapper
 import ru.pulsar.jenkins.library.IStepExecutor
 import ru.pulsar.jenkins.library.configuration.JobConfiguration
+import ru.pulsar.jenkins.library.configuration.SourceFormat
 import ru.pulsar.jenkins.library.ioc.ContextRegistry
 import ru.pulsar.jenkins.library.utils.Logger
 import ru.pulsar.jenkins.library.utils.VRunner
