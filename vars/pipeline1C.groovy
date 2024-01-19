@@ -163,113 +163,113 @@ void call() {
                 }
             }
 
-//            stage('Проверка качества') {
-//                parallel {
-//                    stage('EDT контроль') {
-//                        when {
-//                            beforeAgent true
-//                            expression { config.stageFlags.edtValidate }
-//                        }
-//                        stages {
-//                            stage('Валидация EDT') {
-//                                agent {
-//                                    label agentEdt
-//                                }
-//                                steps {
-//                                    timeout(time: config.timeoutOptions.edtValidate, unit: TimeUnit.MINUTES) {
-//                                        edtValidate config
-//                                    }
-//                                }
-//                            }
-//
-//                            stage('Трансформация результатов') {
-//                                agent {
-//                                    label 'oscript'
-//                                }
-//                                steps {
-//                                    timeout(time: config.timeoutOptions.resultTransformation, unit: TimeUnit.MINUTES) {
-//                                        transform config
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    stage('BDD сценарии') {
-//                        agent {
-//                            label agent1C
-//                        }
-//                        when {
-//                            beforeAgent true
-//                            expression { config.stageFlags.bdd }
-//                        }
-//                        steps {
-//                            timeout(time: config.timeoutOptions.bdd, unit: TimeUnit.MINUTES) {
-//                                unzipInfobase()
-//
-//                                bdd config
-//                            }
-//                        }
-//                    }
-//
-//                    stage('Синтаксический контроль') {
-//                        agent {
-//                            label agent1C
-//                        }
-//                        when {
-//                            beforeAgent true
-//                            expression { config.stageFlags.syntaxCheck }
-//                        }
-//                        steps {
-//                            timeout(time: config.timeoutOptions.syntaxCheck, unit: TimeUnit.MINUTES) {
-//                                syntaxCheck config
-//                            }
-//                        }
-//                    }
-//
-//                    stage('Дымовые тесты') {
-//                        agent {
-//                            label agent1C
-//                        }
-//                        when {
-//                            beforeAgent true
-//                            expression { config.stageFlags.smoke }
-//                        }
-//                        steps {
-//                            timeout(time: config.timeoutOptions.smoke, unit: TimeUnit.MINUTES) {
-//                                unzipInfobase()
-//
-//                                smoke config
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//
-//            stage('SonarQube') {
-//                agent {
-//                    label 'sonar'
-//                }
-//                when {
-//                    beforeAgent true
-//                    expression { config.stageFlags.sonarqube }
-//                }
-//                steps {
-//                    timeout(time: config.timeoutOptions.sonarqube, unit: TimeUnit.MINUTES) {
-//                        sonarScanner config
-//                    }
-//                }
-//            }
+            stage('Проверка качества') {
+                parallel {
+                    stage('EDT контроль') {
+                        when {
+                            beforeAgent true
+                            expression { config.stageFlags.edtValidate }
+                        }
+                        stages {
+                            stage('Валидация EDT') {
+                                agent {
+                                    label agentEdt
+                                }
+                                steps {
+                                    timeout(time: config.timeoutOptions.edtValidate, unit: TimeUnit.MINUTES) {
+                                        edtValidate config
+                                    }
+                                }
+                            }
+
+                            stage('Трансформация результатов') {
+                                agent {
+                                    label 'oscript'
+                                }
+                                steps {
+                                    timeout(time: config.timeoutOptions.resultTransformation, unit: TimeUnit.MINUTES) {
+                                        transform config
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    stage('BDD сценарии') {
+                        agent {
+                            label agent1C
+                        }
+                        when {
+                            beforeAgent true
+                            expression { config.stageFlags.bdd }
+                        }
+                        steps {
+                            timeout(time: config.timeoutOptions.bdd, unit: TimeUnit.MINUTES) {
+                                unzipInfobase()
+
+                                bdd config
+                            }
+                        }
+                    }
+
+                    stage('Синтаксический контроль') {
+                        agent {
+                            label agent1C
+                        }
+                        when {
+                            beforeAgent true
+                            expression { config.stageFlags.syntaxCheck }
+                        }
+                        steps {
+                            timeout(time: config.timeoutOptions.syntaxCheck, unit: TimeUnit.MINUTES) {
+                                syntaxCheck config
+                            }
+                        }
+                    }
+
+                    stage('Дымовые тесты') {
+                        agent {
+                            label agent1C
+                        }
+                        when {
+                            beforeAgent true
+                            expression { config.stageFlags.smoke }
+                        }
+                        steps {
+                            timeout(time: config.timeoutOptions.smoke, unit: TimeUnit.MINUTES) {
+                                unzipInfobase()
+
+                                smoke config
+                            }
+                        }
+                    }
+                }
+            }
+
+            stage('SonarQube') {
+                agent {
+                    label 'sonar'
+                }
+                when {
+                    beforeAgent true
+                    expression { config.stageFlags.sonarqube }
+                }
+                steps {
+                    timeout(time: config.timeoutOptions.sonarqube, unit: TimeUnit.MINUTES) {
+                        sonarScanner config
+                    }
+                }
+            }
         }
 
-//        post('post-stage') {
-//            always {
-//                node('agent') {
-//                    saveResults config
-//                    sendNotifications(config)
-//                }
-//            }
-//        }
+        post('post-stage') {
+            always {
+                node('agent') {
+                    saveResults config
+                    sendNotifications(config)
+                }
+            }
+        }
     }
 
 }
