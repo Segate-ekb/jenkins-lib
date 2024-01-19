@@ -36,11 +36,13 @@ class GetExtensions implements Serializable {
 
         Logger.println("Сборка расширений")
 
+        outDir = "$env.WORKSPACE/${EXTENSIONS_OUT_DIR}"
+        dir(outDir) { echo '' }
         config.initInfoBaseOptions.extensions.each {
             if (it.initMethod == InitMethod.SOURCE) {
                 Logger.println("Сборка расширения ${it.name} из исходников")
                 String srcDir = getSrcDir(it, env);
-                buildExtension(it, srcDir, vrunnerPath, steps, env)
+                buildExtension(it, srcDir, vrunnerPath, steps, outDir)
             } else {
                 Logger.println("Загрузка расширения ${it.name} из интернета по ссылке ${it.path}")
                 loadExtension(it, env)
@@ -48,8 +50,8 @@ class GetExtensions implements Serializable {
         }
     }
 
-    private void buildExtension(Extension extension, String srcDir, String vrunnerPath, IStepExecutor steps, def env) {
-        String pathToExtension = "$env.WORKSPACE/${EXTENSIONS_OUT_DIR}/${extension.name}.cfe"
+    private void buildExtension(Extension extension, String srcDir, String vrunnerPath, IStepExecutor steps, String OutDir) {
+        String pathToExtension = "${outDir}/${extension.name}.cfe"
         def compileExtCommand = "$vrunnerPath compileexttocfe --src ${srcDir} --out ${pathToExtension}"
         List<String> logosConfig = ["LOGOS_CONFIG=$config.logosConfig"]
         steps.withEnv(logosConfig) {
