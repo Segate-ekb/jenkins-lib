@@ -48,17 +48,8 @@ class GetExtensions implements Serializable {
         }
     }
 
-    private void buildExtension(Extension extension, String srcDir, String vrunnerPath, IStepExecutor steps, def env) {
-        // Создаем объект FilePath для рабочего каталога
-        FilePath workspace = new FilePath(new File(env.WORKSPACE))
-
-        // Создаем объект FilePath для директории EXTENSIONS_OUT_DIR внутри рабочего каталога
-        FilePath extensionsOutDir = new FilePath(workspace, EXTENSIONS_OUT_DIR)
-
-        // Создаем директорию, если она не существует
-        if (!extensionsOutDir.exists()) {
-            extensionsOutDir.mkdirs()
-        }
+    private void buildExtension(Extension extension, String srcDir, String vrunnerPath, IStepExecutor steps) {
+        VRunner.exec("mkdir -p $EXTENSIONS_OUT_DIR")
 
         def compileExtCommand = "$vrunnerPath compileexttocfe --src ${srcDir} --out $EXTENSIONS_OUT_DIR/${extension.name}.cfe"
         List<String> logosConfig = ["LOGOS_CONFIG=$config.logosConfig"]
