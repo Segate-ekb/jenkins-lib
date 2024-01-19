@@ -121,7 +121,7 @@ void call() {
 
                                     stage('Загрузка расширений в конфигурацию'){
                                         steps {
-                                            timeout(time: config.timeoutOptions.loadExtintions, unit: TimeUnit.MINUTES) {
+                                            timeout(time: config.timeoutOptions.loadExtensions, unit: TimeUnit.MINUTES) {
                                                 loadExtensions config
                                             }
                                         }

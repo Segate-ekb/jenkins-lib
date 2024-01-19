@@ -20,26 +20,34 @@ class LoadExtensions implements Serializable {
 
         Logger.printLocation()
 
+        def env = steps.env();
+        cfeDir = "$env.WORKSPACE/$GetExtensions.EXTENSIONS_OUT_DIR"
+
+        String vrunnerPath = VRunner.getVRunnerPath();
+               
+        config.initInfoBaseOptions.extensions.each {
+            Logger.println("Установим расширение ${it.name}")
+            loadExtension(it, vrunnerPath, steps, cfeDir)
+        }
+    }
+
+    private void loadExtension (Extension extension, String vrunnerPath, IStepExecutor steps, String cfeDir) {
+
+        String pathToExt = "$cfeDir/${extension.name}.cfe"
+        FilePath localPathToExt = FileUtils.getFilePath(pathToExt)
+
+        // Команда загрузки расширения
+        String loadCommand = vrunnerPath + ' run --command "Путь=' + localPathToExt + ';ЗавершитьРаботуСистемы;" --execute '
+        String executeParameter = '$runnerRoot/epf/ЗагрузитьРасширениеВРежимеПредприятия.epf'
+        if (steps.isUnix()) {
+            executeParameter = '\\' + executeParameter
+        }
+        loadCommand += executeParameter
+        loadCommand += ' --ibconnection "/F./build/ib"'
+
         List<String> logosConfig = ["LOGOS_CONFIG=$config.logosConfig"]
         steps.withEnv(logosConfig) {
-
-            String vrunnerPath = VRunner.getVRunnerPath();
-               
-            config.initInfoBaseOptions.extensions.each {
-                Logger.println("Установим расширение ${it.name}")
-
-                    // if (config.sourceFormat == SourceFormat.EDT) {
-                    //     def env = steps.env();
-                    //     srcDir = "$env.WORKSPACE/$EdtToDesignerFormatTransformation.CONFIGURATION_DIR"
-
-                    //     steps.unstash(EdtToDesignerFormatTransformation.CONFIGURATION_ZIP_STASH)
-                    //     steps.unzip(srcDir, EdtToDesignerFormatTransformation.CONFIGURATION_ZIP)
-                    // } else {
-                    //     srcDir = config.srcDir;
-                    // }
-
-                    // VRunner.exec("$vrunnerPath ${it} --ibconnection \"/F./build/ib\"")
-            }
+            VRunner.exec(loadCommand)
         }
     }
 }
