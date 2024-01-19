@@ -40,7 +40,7 @@ class GetExtensions implements Serializable {
             if (it.initMethod == InitMethod.SOURCE) {
                 Logger.println("Сборка расширения ${it.name} из исходников")
                 String srcDir = getSrcDir(it, env);
-                buildExtension(it, srcDir, vrunnerPath, steps)
+                buildExtension(it, srcDir, vrunnerPath, steps, env)
             } else {
                 Logger.println("Загрузка расширения ${it.name} из интернета по ссылке ${it.path}")
                 loadExtension(it, env)
@@ -48,12 +48,9 @@ class GetExtensions implements Serializable {
         }
     }
 
-    private void buildExtension(Extension extension, String srcDir, String vrunnerPath, IStepExecutor steps) {
-        if (!new File(EXTENSIONS_OUT_DIR).exists()) {
-            new File(EXTENSIONS_OUT_DIR).mkdirs()
-        }
-        FilePath localPathToExtension = FileUtils.getFilePath($EXTENSIONS_OUT_DIR/${extension.name}.cfe)
-        def compileExtCommand = "$vrunnerPath compileexttocfe --src ${srcDir} --out ${localPathToExtension}"
+    private void buildExtension(Extension extension, String srcDir, String vrunnerPath, IStepExecutor steps, def env) {
+        String pathToExtension = "$env.WORKSPACE/${EXTENSIONS_OUT_DIR}/${extension.name}.cfe"
+        def compileExtCommand = "$vrunnerPath compileexttocfe --src ${srcDir} --out ${pathToExtension}"
         List<String> logosConfig = ["LOGOS_CONFIG=$config.logosConfig"]
         steps.withEnv(logosConfig) {
             VRunner.exec(compileExtCommand)
