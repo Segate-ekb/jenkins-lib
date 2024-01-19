@@ -77,6 +77,9 @@ void call() {
 
                                 stages {
                                     stage('Сборка из исходников'){
+                                        when {
+                                            expression { config.needLoadExtensions() }
+                                        }
                                         steps {
                                             timeout(time: config.timeoutOptions.getBinaries, unit: TimeUnit.MINUTES) {
                                                 createDir('build/out/cfe')
@@ -86,9 +89,6 @@ void call() {
                                         }
                                     }
                                     stage('Создание ИБ') {
-                                        // when {
-                                       //     beforeAgent true
-                                       // }
                                         steps {
                                             timeout(time: config.timeoutOptions.createInfoBase, unit: TimeUnit.MINUTES) {
                                                 createDir('build/out/')
@@ -120,6 +120,10 @@ void call() {
                                     }
 
                                     stage('Загрузка расширений в конфигурацию'){
+                                        when {
+                                            beforeAgent true
+                                            expression { config.needLoadExtensions() }
+                                        }
                                         steps {
                                             timeout(time: config.timeoutOptions.loadExtensions, unit: TimeUnit.MINUTES) {
                                                 loadExtensions config

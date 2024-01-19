@@ -25,9 +25,6 @@ class InitInfoBaseOptions implements Serializable {
     """)
     String[] additionalInitializationSteps
 
-    @JsonPropertyDescription("Устанавливать расширения из папки исходников по умолчанию")
-    Boolean installExtensionsByDefault = true
-
     @JsonPropertyDescription("Массив расширений для загрузки в конфигурацию.")
     Extension[] extensions;
 
@@ -59,7 +56,6 @@ class InitInfoBaseOptions implements Serializable {
             "initMethod=" + initMethod +
             ", runMigration=" + runMigration +
             ", additionalInitializationSteps=" + additionalInitializationSteps +
-            ", installExtensionsByDefault=" + installExtensionsByDefault +
             ", extensions=" + extensions +
             '}';
     }

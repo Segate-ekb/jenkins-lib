@@ -40,7 +40,6 @@
     "initMethod": "fromStorage",
     "runMigration": true,
     "additionalInitializationSteps": [],
-    "installExtensionsByDefault": true,
     "extensions": []
   },
   "bdd": {

@@ -165,10 +165,6 @@
             "type": "string"
           }
         },
-        "installExtensionsByDefault": {
-          "type": "boolean",
-          "description": "Устанавливать расширения из папки исходников по умолчанию.\n    По умолчанию содержит значение \"true\"."
-        },
         "extensions": {
           "type": "array",
           "description": "Массив расширений для загрузки в конфигурацию.",
