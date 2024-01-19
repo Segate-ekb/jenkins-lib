@@ -40,7 +40,7 @@ class GetExtensions implements Serializable {
             if (it.initMethod == InitMethod.SOURCE) {
                 Logger.println("Сборка расширения ${it.name} из исходников")
                 String srcDir = getSrcDir(it, env);
-                buildExtension(it, srcDir, vrunnerPath, steps, env)
+                buildExtension(it, srcDir, vrunnerPath, steps)
             } else {
                 Logger.println("Загрузка расширения ${it.name} из интернета по ссылке ${it.path}")
                 loadExtension(it, env)
