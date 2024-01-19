@@ -55,7 +55,7 @@ class EdtToDesignerFormatTransformation implements Serializable {
         transformExtensions(steps, workspaceDir, extensionRoot, edtVersionForRing)
     }
 
-    private void transformConfiguration(IStepExecutor steps, String projectDir, String projectWorkspaceDir, String configurationRoot, String edtVersionForRing) {
+    private void transformConfiguration(IStepExecutor steps, def projectDir, def projectWorkspaceDir, def configurationRoot, String edtVersionForRing) {
         steps.deleteDir(configurationRoot)
 
         Logger.println("Конвертация исходников из формата EDT в формат Конфигуратора")
@@ -71,7 +71,7 @@ class EdtToDesignerFormatTransformation implements Serializable {
         steps.stash(CONFIGURATION_ZIP_STASH, CONFIGURATION_ZIP)
     }
 
-    private void transformExtensions(IStepExecutor steps, String workspaceDir, String extensionRoot, String edtVersionForRing) {
+    private void transformExtensions(IStepExecutor steps, def workspaceDir, def extensionRoot, String edtVersionForRing) {
         steps.deleteDir(extensionRoot)
 
         config.initInfoBaseOptions.extensions.each {
