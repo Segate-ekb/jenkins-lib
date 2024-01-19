@@ -49,7 +49,17 @@ class GetExtensions implements Serializable {
     }
 
     private void buildExtension(Extension extension, String srcDir, String vrunnerPath, IStepExecutor steps) {
-        FilePath (File $EXTENSIONS_OUT_DIR).mkdirs()
+        // Получаем экземпляр класса FilePath, указывающий на рабочий каталог Jenkins.
+        FilePath workspace = new FilePath(steps.getNode(), steps.env.WORKSPACE)
+
+        // Создаем объект FilePath для директории EXTENSIONS_OUT_DIR внутри рабочего каталога.
+        FilePath extensionsOutDir = workspace.child(EXTENSIONS_OUT_DIR)
+
+        // Создаем директорию, если она не существует.
+        if (!extensionsOutDir.exists()) {
+            extensionsOutDir.mkdirs()
+        }
+
         def compileExtCommand = "$vrunnerPath compileexttocfe --src ${srcDir} --out $EXTENSIONS_OUT_DIR/${extension.name}.cfe"
         List<String> logosConfig = ["LOGOS_CONFIG=$config.logosConfig"]
         steps.withEnv(logosConfig) {
