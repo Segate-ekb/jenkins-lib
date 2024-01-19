@@ -40,7 +40,7 @@ class GetExtensions implements Serializable {
             if (it.initMethod == InitMethod.SOURCE) {
                 Logger.println("Сборка расширения ${it.name} из исходников")
                 String srcDir = getSrcDir(it, env);
-                buildExtension(it, srcDir, vrunnerPath, steps)
+                buildExtension(it, srcDir, vrunnerPath, steps, env)
             } else {
                 Logger.println("Загрузка расширения ${it.name} из интернета по ссылке ${it.path}")
                 loadExtension(it, env)
@@ -48,14 +48,14 @@ class GetExtensions implements Serializable {
         }
     }
 
-    private void buildExtension(Extension extension, String srcDir, String vrunnerPath, IStepExecutor steps) {
-        // Получаем экземпляр класса FilePath, указывающий на рабочий каталог Jenkins.
-        FilePath workspace = new FilePath(steps.getNode(), steps.env.WORKSPACE)
+    private void buildExtension(Extension extension, String srcDir, String vrunnerPath, IStepExecutor steps, def env) {
+        // Создаем объект FilePath для рабочего каталога
+        FilePath workspace = new FilePath(new File(env.WORKSPACE))
 
-        // Создаем объект FilePath для директории EXTENSIONS_OUT_DIR внутри рабочего каталога.
-        FilePath extensionsOutDir = workspace.child(EXTENSIONS_OUT_DIR)
+        // Создаем объект FilePath для директории EXTENSIONS_OUT_DIR внутри рабочего каталога
+        FilePath extensionsOutDir = new FilePath(workspace, EXTENSIONS_OUT_DIR)
 
-        // Создаем директорию, если она не существует.
+        // Создаем директорию, если она не существует
         if (!extensionsOutDir.exists()) {
             extensionsOutDir.mkdirs()
         }
