@@ -75,6 +75,11 @@ class EdtToDesignerFormatTransformation implements Serializable {
         steps.deleteDir(extensionRoot)
 
         config.initInfoBaseOptions.extensions.each {
+
+            if (it.initMethod != InitMethod.SOURCE) {
+                return
+            }
+
             Logger.println("Конвертация исходников расширения ${it.name} из формата EDT в формат Конфигуратора")
 
             def env = steps.env();
