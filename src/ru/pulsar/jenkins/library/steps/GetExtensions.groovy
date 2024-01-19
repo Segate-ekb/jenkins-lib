@@ -36,7 +36,7 @@ class GetExtensions implements Serializable {
 
         Logger.println("Сборка расширений")
 
-        outDir = "$env.WORKSPACE/${EXTENSIONS_OUT_DIR}"
+        String outDir = "$env.WORKSPACE/${EXTENSIONS_OUT_DIR}"
         dir(outDir) { echo '' }
         config.initInfoBaseOptions.extensions.each {
             if (it.initMethod == InitMethod.SOURCE) {
