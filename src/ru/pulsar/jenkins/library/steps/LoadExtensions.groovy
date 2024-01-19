@@ -23,7 +23,7 @@ class LoadExtensions implements Serializable {
         Logger.printLocation()
 
         def env = steps.env();
-        cfeDir = "$env.WORKSPACE/$GetExtensions.EXTENSIONS_OUT_DIR"
+        String cfeDir = "$env.WORKSPACE/$GetExtensions.EXTENSIONS_OUT_DIR"
 
         String vrunnerPath = VRunner.getVRunnerPath();
                
