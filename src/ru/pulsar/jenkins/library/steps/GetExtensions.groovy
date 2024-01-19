@@ -36,13 +36,11 @@ class GetExtensions implements Serializable {
 
         Logger.println("Сборка расширений")
 
-        String outDir = "$env.WORKSPACE/${EXTENSIONS_OUT_DIR}"
-        dir(outDir) { echo '' }
         config.initInfoBaseOptions.extensions.each {
             if (it.initMethod == InitMethod.SOURCE) {
                 Logger.println("Сборка расширения ${it.name} из исходников")
                 String srcDir = getSrcDir(it, env);
-                buildExtension(it, srcDir, vrunnerPath, steps, outDir)
+                buildExtension(it, srcDir, vrunnerPath, steps, env)
             } else {
                 Logger.println("Загрузка расширения ${it.name} из интернета по ссылке ${it.path}")
                 loadExtension(it, env)
@@ -50,14 +48,29 @@ class GetExtensions implements Serializable {
         }
     }
 
-    private void buildExtension(Extension extension, String srcDir, String vrunnerPath, IStepExecutor steps, String OutDir) {
-        String pathToExtension = "${outDir}/${extension.name}.cfe"
+    private void buildExtension(Extension extension, String srcDir, String vrunnerPath, IStepExecutor steps, def env) {
+        // Определение пути к директории расширения
+        String extensionsOutDirPath = "${env.WORKSPACE}/${EXTENSIONS_OUT_DIR}"
+        String pathToExtension = "${extensionsOutDirPath}/${extension.name}.cfe"
+
+        // Создание объекта FilePath для директории
+        FilePath extensionsOutDir = new FilePath(steps.node(), extensionsOutDirPath)
+
+        // Создание директории, если она не существует
+        if (!extensionsOutDir.exists()) {
+            extensionsOutDir.mkdirs()
+        }
+
+        // Составление команды для компиляции расширения
         def compileExtCommand = "$vrunnerPath compileexttocfe --src ${srcDir} --out ${pathToExtension}"
+
+        // Установка переменных окружения и выполнение команды
         List<String> logosConfig = ["LOGOS_CONFIG=$config.logosConfig"]
         steps.withEnv(logosConfig) {
             VRunner.exec(compileExtCommand)
         }
     }
+
 
     private void loadExtension(Extension extension, def env) {
         String pathToExtension = "$env.WORKSPACE/${EXTENSIONS_OUT_DIR}/${extension.name}.cfe"
