@@ -39,25 +39,28 @@ class EdtToDesignerFormatTransformation implements Serializable {
         def env = steps.env();
 
         def srcDir = config.srcDir
-        def projectDir = FileUtils.getFilePath("$env.WORKSPACE/$srcDir")
         def workspaceDir = FileUtils.getFilePath("$env.WORKSPACE/$WORKSPACE")
+
+        def projectWorkspaceDir = FileUtils.getFilePath("$workspaceDir/cf")
+        def projectDir = FileUtils.getFilePath("$env.WORKSPACE/$srcDir")
         def configurationRoot = FileUtils.getFilePath("$env.WORKSPACE/$CONFIGURATION_DIR")
+
+
         def extensionRoot = FileUtils.getFilePath("$env.WORKSPACE/$EXTENSION_DIR")
         def edtVersionForRing = EDT.ringModule(config)
 
         steps.deleteDir(workspaceDir)
 
-        transformConfiguration(steps, projectDir, workspaceDir, configurationRoot, edtVersionForRing)
-        // TODO: Переделать когда пойму как выглядит расширение в EDT
-       // transformExtensions(steps, projectDir, workspaceDir, extensionRoot, edtVersionForRing)
+        transformConfiguration(steps, projectDir, projectWorkspaceDir, configurationRoot, edtVersionForRing)
+        transformExtensions(steps, workspaceDir, extensionRoot, edtVersionForRing)
     }
 
-    private void transformConfiguration(IStepExecutor steps, String projectDir, String workspaceDir, String configurationRoot, String edtVersionForRing) {
+    private void transformConfiguration(IStepExecutor steps, String projectDir, String projectWorkspaceDir, String configurationRoot, String edtVersionForRing) {
         steps.deleteDir(configurationRoot)
 
         Logger.println("Конвертация исходников из формата EDT в формат Конфигуратора")
 
-        def ringCommand = "ring $edtVersionForRing workspace export --workspace-location \"$workspaceDir\" --project \"$projectDir\" --configuration-files \"$configurationRoot\""
+        def ringCommand = "ring $edtVersionForRing workspace export --workspace-location \"$projectWorkspaceDir\" --project \"$projectDir\" --configuration-files \"$configurationRoot\""
 
         def ringOpts = [Constants.DEFAULT_RING_OPTS]
         steps.withEnv(ringOpts) {
@@ -68,19 +71,23 @@ class EdtToDesignerFormatTransformation implements Serializable {
         steps.stash(CONFIGURATION_ZIP_STASH, CONFIGURATION_ZIP)
     }
 
-    // TODO: Переделать когда пойму как выглядит расширение в EDT
-    private void transformExtensions(IStepExecutor steps, String projectDir, String workspaceDir, String extensionRoot, String edtVersionForRing) {
+    private void transformExtensions(IStepExecutor steps, String workspaceDir, String extensionRoot, String edtVersionForRing) {
         steps.deleteDir(extensionRoot)
 
-        Logger.println("Конвертация исходников расширений из формата EDT в формат Конфигуратора")
+        config.initInfoBaseOptions.extensions.each {
+            Logger.println("Конвертация исходников расширения ${it.name} из формата EDT в формат Конфигуратора")
 
-        def ringCommand = "ring $edtVersionForRing workspace export --workspace-location \"$workspaceDir\" --project \"$projectDir\" --configuration-files \"$extensionRoot\""
+            def env = steps.env();
+            def projectDir = FileUtils.getFilePath("$env.WORKSPACE/${it.path}")
+            def currentExtensionWorkspaceDir = FileUtils.getFilePath("$workspaceDir/cfe/${it.name}")
 
-        def ringOpts = [Constants.DEFAULT_RING_OPTS]
-        steps.withEnv(ringOpts) {
-            steps.cmd(ringCommand)
+            def ringCommand = "ring $edtVersionForRing workspace export --workspace-location \"$currentExtensionWorkspaceDir\" --project \"$projectDir\" --configuration-files \"$extensionRoot/${it.name}\""
+
+            def ringOpts = [Constants.DEFAULT_RING_OPTS]
+            steps.withEnv(ringOpts) {
+                steps.cmd(ringCommand)
+            }
         }
-
         steps.zip(EXTENSION_DIR, EXTENSION_ZIP)
         steps.stash(EXTENSION_ZIP_STASH, EXTENSION_ZIP)
     }

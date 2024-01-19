@@ -36,10 +36,17 @@ class GetExtensions implements Serializable {
 
         Logger.println("Сборка расширений")
 
+        String sourceDirName = ""
+
+        if (config.sourceFormat == SourceFormat.EDT) {
+            sourceDirName = "$env.WORKSPACE/$EdtToDesignerFormatTransformation.EXTENSION_DIR"
+        }
+        extractConvertedExtensions(sourceDirName, steps)
+
         config.initInfoBaseOptions.extensions.each {
             if (it.initMethod == InitMethod.SOURCE) {
                 Logger.println("Сборка расширения ${it.name} из исходников")
-                String srcDir = getSrcDir(it, env);
+                String srcDir = getSrcDir(it, sourceDirName)
                 buildExtension(it, srcDir, vrunnerPath, steps)
             } else {
                 Logger.println("Загрузка расширения ${it.name} из интернета по ссылке ${it.path}")
@@ -71,23 +78,19 @@ class GetExtensions implements Serializable {
         return VRunner.getVRunnerPath()
     }
 
-    private String getSrcDir(Extension extension, def env) {
+    private String getSrcDir(Extension extension, String sourceDirName) {
         if (config.sourceFormat == SourceFormat.EDT) {
-            sourceDirName = "$env.WORKSPACE/$EdtToDesignerFormatTransformation.EXTENSION_DIR"
+            return "${sourceDirName}/${extension.name}"
+        } else {
+            return "${sourceDirName}/${extension.path}"
+        }
+    }
+
+    private void extractConvertedExtensions(String sourceDirName, IStepExecutor steps) {
+        if (config.sourceFormat == SourceFormat.EDT) {
             // распакуем расширения
             steps.unstash(EdtToDesignerFormatTransformation.EXTENSION_ZIP_STASH)
             steps.unzip(sourceDirName, EdtToDesignerFormatTransformation.EXTENSION_ZIP)
-
-            return sourceDirName;
-        } else {
-            String cfeDirName
-            if (extension.path == null) {
-                cfeDirName = config.srcDir+"/cfe/"+extension.name
-            } else {
-                cfeDirName = extension.path
-            }
-
-            return cfeDirName;
         }
     }
 }
