@@ -39,6 +39,7 @@
   "initInfobase": {
     "initMethod": "fromStorage",
     "runMigration": true,
+    "useIbcmd": false,
     "additionalInitializationSteps": [],
     "extensions": []
   },
