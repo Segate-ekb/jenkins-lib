@@ -19,6 +19,9 @@ class InitInfoBaseOptions implements Serializable {
     @JsonPropertyDescription("Запустить миграцию ИБ")
     Boolean runMigration = true
 
+    @JsonPropertyDescription("Использовать утилиту ibcmd при инициализации ИБ")
+    Boolean useIbcmd = false
+
     @JsonPropertyDescription("""Дополнительные шаги, запускаемые через vrunner.
     В каждой строке передается отдельная команда 
     vrunner и ее аргументы (например, "vanessa --settings ./tools/vrunner.first.json")
@@ -31,6 +34,7 @@ class InitInfoBaseOptions implements Serializable {
         return "InitInfoBaseOptions{" +
             "initMethod=" + initMethod +
             ", runMigration=" + runMigration +
+            ", useIbcmd=" + useIbcmd +
             ", additionalInitializationSteps=" + additionalInitializationSteps +
             '}';
     }
