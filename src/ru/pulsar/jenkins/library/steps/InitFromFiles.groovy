@@ -47,6 +47,9 @@ class InitFromFiles implements Serializable {
         if (config.initInfoBaseOptions.useIbcmd) {
             initCommand += " --ibcmd"
         }
-        VRunner.exec(initCommand)
+        List<String> logosConfig = ["LOGOS_CONFIG=$config.logosConfig"]
+        steps.withEnv(logosConfig) {
+            VRunner.exec(initCommand)
+        }
     }
 }
