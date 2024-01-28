@@ -30,16 +30,16 @@ class GetExtensions implements Serializable {
 
         steps.installLocalDependencies();
 
-
         String vrunnerPath = initVRunnerPath();
-
 
         Logger.println("Сборка расширений")
 
         String sourceDirName = ""
-
         if (config.sourceFormat == SourceFormat.EDT) {
             sourceDirName = "$env.WORKSPACE/$EdtToDesignerFormatTransformation.EXTENSION_DIR"
+        }
+        else {
+            sourceDirName = "$env.WORKSPACE"
         }
         extractConvertedExtensions(sourceDirName, steps)
 
