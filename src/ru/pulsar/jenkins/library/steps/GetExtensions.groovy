@@ -61,6 +61,9 @@ class GetExtensions implements Serializable {
         // ТУТ КОНЕЦ ГРЯЗНОГО ХАКА
 
         def compileExtCommand = "$vrunnerPath compileexttocfe --src ${srcDir} --out $EXTENSIONS_OUT_DIR/${extension.name}.cfe"
+        if (config.initInfoBaseOptions.useIbcmd) {
+            compileExtCommand += " --ibcmd"
+        }
         List<String> logosConfig = ["LOGOS_CONFIG=$config.logosConfig"]
         steps.withEnv(logosConfig) {
             VRunner.exec(compileExtCommand)
