@@ -44,7 +44,7 @@ class CreateInfobase implements Serializable {
 
     }
 
-    private void createBase(String dtPath = '', steps) {
+    private void createBase(String dtPath = '', def steps) {
         Logger.println("Создание информационной базы")
         String vrunnerPath = VRunner.getVRunnerPath();
         def initCommand = "$vrunnerPath init-dev  --ibconnection \"/F./build/ib\""
