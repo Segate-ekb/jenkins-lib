@@ -28,7 +28,7 @@ class CreateInfobase implements Serializable {
         String baseDBPath = config.initInfoBaseOptions.baseDBPath
         if (baseDBPath == '') {
             // Не указан путь к базе данных, создадим пустую базу данных.
-            createBase()
+            createBase(? steps)
         } else if (baseDBPath.endsWith('.1CD')) {
             // Это файл базы данных 1С, просто скопируем его.
             String pathToInfobase = "$env.WORKSPACE/build/ib/1Cv8.1CD"
@@ -37,14 +37,14 @@ class CreateInfobase implements Serializable {
             // Это файл дампа БД, скопируем его и создадим БД.
             String pathToDt = "$env.WORKSPACE/build/tmp/dump.dt"
             FileUtils.loadFile(baseDBPath, env, pathToDt)
-            createBase('build/tmp/dump.dt')
+            createBase('build/tmp/dump.dt', steps)
         } else {
             Logger.println("Неизвестный формат базы данных. Поддерживаются только .1CD и .dt")
         }
 
     }
 
-    private void createBase(String dtPath = '') {
+    private void createBase(String dtPath = '', steps) {
         Logger.println("Создание информационной базы")
         String vrunnerPath = VRunner.getVRunnerPath();
         def initCommand = "$vrunnerPath init-dev  --ibconnection \"/F./build/ib\""
@@ -58,7 +58,7 @@ class CreateInfobase implements Serializable {
         if (vrunnerSettings && steps.fileExists(vrunnerSettings)) {
             command += " --settings $vrunnerSettings"
         }
-        
+
         VRunner.exec(initCommand)
     }
 }
