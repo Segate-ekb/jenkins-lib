@@ -28,7 +28,7 @@ class CreateInfobase implements Serializable {
         String baseDBPath = config.initInfoBaseOptions.baseDBPath
         if (baseDBPath == '') {
             // Не указан путь к базе данных, создадим пустую базу данных.
-            createBase(,steps)
+            createBase('', steps)
         } else if (baseDBPath.endsWith('.1CD')) {
             // Это файл базы данных 1С, просто скопируем его.
             String pathToInfobase = "$env.WORKSPACE/build/ib/1Cv8.1CD"
