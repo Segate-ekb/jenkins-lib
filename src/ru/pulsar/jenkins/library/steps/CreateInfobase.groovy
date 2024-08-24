@@ -56,7 +56,7 @@ class CreateInfobase implements Serializable {
 
         String vrunnerSettings = options.vrunnerSettings
         if (vrunnerSettings && steps.fileExists(vrunnerSettings)) {
-            command += " --settings $vrunnerSettings"
+            initCommand += " --settings $vrunnerSettings"
         }
 
         VRunner.exec(initCommand)
