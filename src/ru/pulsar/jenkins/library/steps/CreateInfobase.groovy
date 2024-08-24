@@ -48,17 +48,21 @@ class CreateInfobase implements Serializable {
         Logger.println("Создание информационной базы")
         String vrunnerPath = VRunner.getVRunnerPath();
         def initCommand = "$vrunnerPath init-dev  --ibconnection \"/F./build/ib\""
-        if (dtPath) {
-            initCommand += " --dt $dtPath"
-        }
-
-        def options = config.initInfoBaseOptions
-
-        String vrunnerSettings = options.vrunnerSettings
-        if (vrunnerSettings && steps.fileExists(vrunnerSettings)) {
-            initCommand += " --settings $vrunnerSettings"
-        }
-
         VRunner.exec(initCommand)
+
+        if (dtPath) {
+            // Загрузка из dt в vrunner 2.2.2 не работает корректно, потому инициировать через init-dev не получится.
+            def loadDtCommand = "$vrunnerPath restore --ibconnection \"/F./build/ib\" $dtPath"
+            VRunner.exec(loadDtCommand)
+
+            def updateDbCommand = "$vrunnerPath  updatedb --ibconnection \"/F./build/ib\""
+            def options = config.initInfoBaseOptions
+
+            String vrunnerSettings = options.vrunnerSettings
+            if (vrunnerSettings && steps.fileExists(vrunnerSettings)) {
+                updateDbCommand += " --settings $vrunnerSettings"
+            }
+            VRunner.exec(updateDbCommand)
+        }
     }
 }
