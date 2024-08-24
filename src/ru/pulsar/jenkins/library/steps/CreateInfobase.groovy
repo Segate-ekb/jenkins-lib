@@ -51,6 +51,14 @@ class CreateInfobase implements Serializable {
         if (dtPath) {
             initCommand += " --dt $dtPath"
         }
+
+        def options = config.initInfoBaseOptions
+
+        String vrunnerSettings = options.vrunnerSettings
+        if (vrunnerSettings && steps.fileExists(vrunnerSettings)) {
+            command += " --settings $vrunnerSettings"
+        }
+        
         VRunner.exec(initCommand)
     }
 }
